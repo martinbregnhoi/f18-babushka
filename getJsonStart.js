@@ -4,12 +4,36 @@ async function hentJson() {
     let jsonData = await fetch("json/menu.json");
     retter = await jsonData.json();
     //console.log(retter);
-    visRetter(retter);
-   
-    
+    // find og filtrer retter efter kategori og gem dem i nyt array
+    let forretter = retter.filter(ret => ret.kategori == "forretter");
+    let hovedretter = retter.filter(ret => ret.kategori == "hovedretter");
+    let desserter = retter.filter(ret => ret.kategori == "desserter");
+    let drikkevarer = retter.filter(ret => ret.kategori == "drikkevarer");
+
+    document.querySelector("#filter-forretter").addEventListener("click", () => {
+        visRetter(forretter, "Forretter" )
+    });
+    document.querySelector("#filter-alle").addEventListener("click", () => {
+        visRetter(retter, "Menu")
+    });
+    document.querySelector("#filter-hovedretter").addEventListener("click", () => {
+        visRetter(hovedretter, "Hovedretter")
+    });
+    document.querySelector("#filter-desserter").addEventListener("click", () => {
+        visRetter(desserter, "Desserter")
+    });
+    document.querySelector("#filter-drikkevarer").addEventListener("click", () => {
+        visRetter(drikkevarer, "Drikkevarer")
+    });
+
+    visRetter(retter, "Menu");
+
+
 }
 
-function visRetter(retter) {
+function visRetter(retter, overskrift) {
+    document.querySelector("[data-overskrift]").textContent = overskrift;
+    
     let menuTemplate = document.querySelector("[data-template]");
     let templateModtager = document.querySelector("[data-container]");
     templateModtager.innerHTML = "";
@@ -22,7 +46,7 @@ function visRetter(retter) {
         klon.querySelector("[data-pris]").textContent = hverRet.pris;
         klon.querySelector("[data-billede]").setAttribute("src", "imgs/small/" + hverRet.billede + "-sm.jpg")
         templateModtager.appendChild(klon);
-       
+
     });
 }
 
